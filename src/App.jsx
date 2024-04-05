@@ -4,6 +4,7 @@ import { drawStuffOnCanvas } from "./canvas.js";
 function CanvasRenderer() {
   const canvasRef = useRef(null);
   const backgroundImageRef = useRef(null);
+  const deltaTimeRef = useRef(0)
 
   const draw = (canvas) => {
     const width = 1080;
@@ -27,6 +28,15 @@ function CanvasRenderer() {
     });
   };
 
+  function looper() {
+    if (Date.now() - deltaTimeRef.current >= 60) {
+      draw(canvasRef.current);
+      deltaTimeRef.current += 60;
+      deltaTimeRef.current = Date.now()
+    }
+    requestAnimationFrame(looper);
+  }
+
   useEffect(() => {
     const image = new Image();
     image.onload = () => {
@@ -39,7 +49,7 @@ function CanvasRenderer() {
     image.src =
       "https://fastly.picsum.photos/id/339/1080/720.jpg?hmac=g-NTwo5bYR4u--90DKzyHOXdeoEwuTF_RTQbQEHwfZY";
 
-    draw(canvasRef.current);
+    looper()
   }, []);
 
   const CanvasElement = useMemo(() => <canvas ref={canvasRef}></canvas>, []);

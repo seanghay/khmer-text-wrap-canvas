@@ -12,11 +12,16 @@ export function drawStuffOnCanvas(canvas, { width, height, backgroundImage }) {
     ctx.drawImage(backgroundImage, 0, 0, width, height);
   }
 
+  const textBoxWidth = 350 + (150 * (1 + Math.sin(Date.now() / 500))) / 2;
+  const positions = ["left", "center", "right"];
+  const textAlignment =
+    positions[Math.round((2 * (1 + Math.sin(Date.now() / 3000))) / 2)];
+
   const block = textEngine.create(ctx, {
-    top: 400,
+    top: 300,
     left: 200,
-    width: 500,
-    textAlignment: "left",
+    width: textBoxWidth,
+    textAlignment,
     lineHeight: 1.4,
     spans: [
       {
@@ -40,14 +45,14 @@ export function drawStuffOnCanvas(canvas, { width, height, backgroundImage }) {
         fontWeight: "400",
       },
       {
-        text: " Hello world Mollitia facere eveniet tenetur, sequi enim expedita quod consectetur dolore omnis maxime ipsa beatae velit architecto nobis cupiditate animi. Libero, numquam laboriosam. បានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរ",
+        text: " Hello world Mollitia facere eveniet tenetur, \n\nsequi enim expedita quod consectetur dolore omnis maxime ipsa beatae velit architecto nobis cupiditate animi. Libero, numquam laboriosam. បានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរបានទៅប្រទេសខ្មែរ",
         fontSize: 18,
         fontFamily: "Google Sans, Noto Sans Khmer, sans-serif",
         fillStyle: "darkred",
         fontWeight: "400",
       },
       {
-        text: "។",
+        text: "។ ",
         fontSize: 18,
         fontFamily: "Noto Serif Khmer, sans-serif",
         fillStyle: "lightgreen",
@@ -56,11 +61,30 @@ export function drawStuffOnCanvas(canvas, { width, height, backgroundImage }) {
     ],
   });
 
-  ctx.fillStyle = "rgba(200, 200, 100 ,.65)";
+  ctx.fillStyle = "rgba(255, 255, 255 , .65)";
 
   // compute height from text layout
-  ctx.fillRect(200, 400, 500, block.height());
+  ctx.fillRect(200, 300, textBoxWidth, block.height());
   block.draw();
+
+  textEngine
+    .create(ctx, {
+      top: 300 + block.height() + 10,
+      left: 200,
+      width: textBoxWidth,
+      textAlignment: "center",
+      lineHeight: 1.4,
+      spans: [
+        {
+          text: "Text Alignment: " + textAlignment,
+          fontSize: 18,
+          fontFamily: "sans-serif",
+          fillStyle: "white",
+          fontWeight: "bold",
+        },
+      ],
+    })
+    .draw();
 
   textEngine
     .create(ctx, {
